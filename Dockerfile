@@ -7,9 +7,9 @@ ARG LICENSE
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 RUN apt-get update
-RUN apt-get install ntp
+RUN apt-get install -y ntp
 RUN service ntp stop
-RUN ntpdate -s time.nist.gov
+RUN ntpd -s time.nist.gov
 RUN service ntp start
 
 # allow services to start
