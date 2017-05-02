@@ -6,12 +6,17 @@ ARG LICENSE
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
+RUN apt-get update
+RUN /etc/init.d/psa restart
+RUN apt-get install ntp
+RUN service ntp stop
+RUN ntpdate -s time.nist.gov
+RUN service ntp start
 
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
-RUN apt-get update \
-    && apt-get install -y wget libicu-dev \
+RUN apt-get install -y wget libicu-dev \
     && wget -q -O /root/ai http://autoinstall.plesk.com/plesk-installer \
     && bash /root/ai \
         --all-versions \
